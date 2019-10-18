@@ -16,13 +16,13 @@ MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
     ```bash
     sudo apt update
     sudo apt dist-upgrade
-    sudo apt autoremove 
+    sudo apt autoremove
     ```
 
 - Install MariaDB server and client applications with following command
 
     ```bash
-    sudo apt-get install mariadb-server mariadb-client 
+    sudo apt-get install mariadb-server mariadb-**client**
     ```
 
 - Start/Stop MariaDB Server, using following commands
@@ -127,7 +127,9 @@ MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
 
 - It may be necessary to open Ubuntu Firewall to allow Web Server to connect on port 3306 with following command
 
-  sudo ufw allow from ip-172-31-46-106.ec2.internal to any port 3306
+    ```bash
+    sudo ufw allow from ip-172-31-46-106.ec2.internal to any port 3306
+    ```
 
 ## Steps to allow connections from Web Server EC2 Instance to MariaDB Server EC2 Instance
 
