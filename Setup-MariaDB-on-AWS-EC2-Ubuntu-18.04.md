@@ -2,7 +2,7 @@
 
 ## Locating Addresses for Configuration
 
-**Web Server** (AWS EC2 Instance) **Public DNS**: `ec2-54-162-133-48.compute-1.amazonaws.com` 
+**Web Server** (AWS EC2 Instance) **Public DNS**: `ec2-54-162-133-48.compute-1.amazonaws.com`
 **Web Server** (AWS EC2 Instance) **Private DNS**: `ip-172-31-46-106.ec2.internal`
 **MariaDB Server** (AWS EC2 Instance) **Public DNS**:  `ec2-54-161-105-107.compute-1.amazonaws.com`
 MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
@@ -17,7 +17,6 @@ MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
     sudo apt update
     sudo apt dist-upgrade
     sudo apt autoremove
-    ```
 
 - Install MariaDB server and client applications with following command
 
@@ -113,17 +112,23 @@ MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
 
 - By default, MariaDB only listens for connections from the localhost. All remote access to the server is denied by default. To enable remote access, run the commands below to editMariaDB configuration file.
   
-  sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+    ```bash
+    sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+    ```
 
 - Change `bind-address` from `127.0.0.1` to `0.0.0.0` and save it.
 
 - After making the change above, save the file and run the commands below to restart the server.
 
-  sudo systemctl restart mariadb.service
+    ```bash
+    sudo systemctl restart mariadb.service
+    ```
 
 - To verify changes, run `sudo netstat -anp | grep 3306` command then following output should be printed if changes effective.
 
-  tcp   0   0 0.0.0.0:3306     0.0.0.0:*    LISTEN    3213/mysqld
+    ```bash
+    tcp   0   0 0.0.0.0:3306     0.0.0.0:*    LISTEN    3213/mysqld
+    ```
 
 - It may be necessary to open Ubuntu Firewall to allow Web Server to connect on port 3306 with following command
 
@@ -131,13 +136,15 @@ MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
     sudo ufw allow from ip-172-31-46-106.ec2.internal to any port 3306
     ```
 
-## Steps to allow connections from Web Server EC2 Instance to MariaDB Server EC2 Instance
+## Steps to allow connections from Web Server to MariaDB Server
 
-- Assign both Web Server EC2 Instance and MariaDB Server EC2 Instance to security groups on AWS Console
+- Assign both Web Server EC2 Instance and MariaDB Server EC2 Instance to `security groups` on AWS Console
   
-- Then, open Security Group of MariaDB Server inbound tab and edit.
+- Then, open Security Group of MariaDB Server `inbound tab` and edit.
 
 - Lastly, set up inbound connection rule on  Security Group of MariaDB Server to allow connection from Web Server as shown below
+
+![MariaDB Inbound Rules](/resource/MariaDB_InboundRules.png)
 
 ## Steps to setup MariaDB client on Web Server for remote connection
 
@@ -145,8 +152,12 @@ MariaDB Server (AWS EC2 Instance) Private DNS: `ip-172-31-41-184.ec2.internal`
 
 - Install MariaDB client application with following command
   
-  sudo apt-get install mariadb-client
+    ```bash
+    sudo apt-get install mariadb-client
+    ```
 
 - Establish remote connection to MariaDB Server with following command using hostname (`MariaDB Server Private DNS`), username(`your-username`) and password predefined in previous steps.
 
-  sudo mysql -uyour_username -pyour_username_password -h ip-172-31-41-184.ec2.internal
+    ```bash
+    sudo mysql -uyour_username -pyour_username_password -h ip-172-31-41-184.ec2.internal
+    ```
